@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    tools:context="com.example.daeun.pyeongchangstop.LockScreenActivity">
+
+    <ImageView
+        android:id="@+id/unlockImage"
+        android:layout_width="41dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="294dp"
+        app:layout_constraintBottom_toBottomOf="@+id/slidingButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/slidingButton"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:drawable/ic_lock_idle_lock"
+        android:layout_marginStart="294dp" />
+
+    <ImageView
+        android:id="@+id/mainImage"
+        android:layout_width="383dp"
+        android:layout_height="195dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
+        android:adjustViewBounds="false"
+        android:fitsSystemWindows="false"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textClock"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/img_main" />
+
+    <TextClock
+        android:id="@+id/textClock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
+        android:format12Hour="a hh:mm"
+        android:textSize="44sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="26dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="24dp"
+        android:text="Title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainImage" />
+
+    <ImageView
+        android:id="@+id/appImage"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="37dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/slidingButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/slidingButton"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/img_face1"
+        android:layout_marginStart="37dp" />
+
+    <SeekBar
+        android:id="@+id/slidingButton"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="50dp"
+        android:progressDrawable="@drawable/transparent_background"
+        android:thumb="@drawable/img_face2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainImage"
+        app:layout_constraintVertical_bias="0.874" />
+
+    <TextView
+        android:id="@+id/contentText"
+        android:layout_width="308dp"
+        android:layout_height="126dp"
+        android:layout_marginTop="12dp"
+        android:lineSpacingExtra="5dp"
+        android:text="content"
+        android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.657"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+
+</android.support.constraint.ConstraintLayout>
