@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -26,7 +25,7 @@ public class LockScreenActivity extends AppCompatActivity {
     Cursor ucursor;
     Cursor cursor;
     Cursor dcursor;
-    TextView content, title;
+    TextView content, title, apptext;
     String dbdate;
     int dbidate;
     int current;
@@ -40,32 +39,16 @@ public class LockScreenActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         setContentView(R.layout.activity_lock_screen);
 
-//        findViewById(R.id.unlockButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-//
-//        findViewById(R.id.appButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = getIntent();
-//                int score = i.getIntExtra("usrPoint", 0);
-//                Intent intent = new Intent(LockScreenActivity.this, MainActivity.class);
-//                intent.putExtra("usrPoint", score + 5);
-//
-//                startActivity(intent);
-//            }
-//        });
         myDB = new MySQLiteOpenHelper(getApplicationContext(), "pcSTOP.db", null, 1);
         db = myDB.getWritableDatabase();
         ucursor = db.rawQuery("SELECT * FROM usrtable", null); // 사용자 정보 가져오기
         ucursor.moveToFirst();
 
+        // 잠금해제 하루 제한을 위한 변수 dbdate, dbcount 세팅
         dcursor = db.rawQuery("SELECT * FROM datetable", null); // 잠금해제 정보 가져오기
         dcursor.moveToFirst();
         dbdate = dcursor.getString(1);
+        dbcount = dcursor.getInt(2);
 
         StringTokenizer tokenizer = new StringTokenizer(dbdate, "-");
         while (tokenizer.hasMoreTokens()) {
@@ -78,18 +61,24 @@ public class LockScreenActivity extends AppCompatActivity {
         String getTime = sdf.format(date);
         current = Integer.parseInt(getTime);
 
+        // 잠금화면 포인트 획득 횟수에 따라 text 내용 보여주기
+        apptext = (TextView) findViewById(R.id.appText);
+        if (dbcount == 5) {
+            apptext.setText("앱 실행하기");
+        } else {
+            apptext.setText("+ 5point");
+        }
+
+
         // 디비에 저장된 컨텐츠 표시
         cursor = db.rawQuery("SELECT * FROM locktable", null); // 잠금화면 표시 내용 가져오기
         Random random = new Random();
         cursor.moveToPosition(random.nextInt(16));
-//        cursor.moveToPosition(1);
-
         title = (TextView) findViewById(R.id.titleText);
         content = (TextView) findViewById(R.id.contentText);
         title.setText(cursor.getString(1));
         content.setText(cursor.getString(2));
-//        title.setText(dbidate + "");
-//        content.setText(current + "");
+
 
         // 잠금해제 슬라이드 구현
         slidingButton = (SeekBar) findViewById(R.id.slidingButton);
@@ -113,10 +102,8 @@ public class LockScreenActivity extends AppCompatActivity {
                     if (current > dbidate) { // 하루 지나면 unlocktime 초기화
                         db.execSQL("update datetable set usedate=date('now','localtime'), unlocktime=0 where _id=1;");
                     }
-                    dcursor = db.rawQuery("SELECT * FROM datetable", null); // 잠금해제 정보 가져오기
-                    dcursor.moveToFirst();
-                    dbcount = dcursor.getInt(2);
-                    Toast.makeText(getApplicationContext(), dbcount+"" , Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getApplicationContext(), (dbcount + 1) + "", Toast.LENGTH_SHORT).show();
 
                     if (dbcount == 5) {
                         Toast.makeText(getApplicationContext(), "하루 제한 초과", Toast.LENGTH_SHORT).show();

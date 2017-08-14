@@ -37,10 +37,6 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         // 잠금화면 컨텐츠 테이블 생성 및 초기화
         sql = "create table locktable(_id INTEGER PRIMARY KEY AUTOINCREMENT, title text, content text)";
         db.execSQL(sql);
-//        ContentValues values = new ContentValues();
-//        values.put("title", "평창 올림픽");
-//        values.put("content", "평창 동계 올림픽");
-//        db.insert("locktable", null, values);
         db.execSQL("insert into locktable (title, content) values ('알파인 스키','알파인 스키는 뒤꿈치가 고정된 바인딩을 장착한 스키를 타고 눈 덮인 슬로프를 내려오는 스포츠입니다. 경기종목은 크게 스피드(속도) 종목과 테크니컬(기술) 종목, 2가지로 구성됩니다.');");
         db.execSQL("insert into locktable (title, content) values ('바이애슬론','바이애슬론은 서로 다른 종목인 크로스컨트리 스키와 사격이 결합된 경기입니다. 선수들은 총을 등에 맨 채로 스키를 타고 일정 거리를 주행하며, 정해진 사격장에서 사격을 합니다.');");
         db.execSQL("insert into locktable (title, content) values ('봅슬레이','봅슬레이는 방향을 조종할 수 있는 썰매를 타고 얼음으로 만든 트랙을 활주하는 경기입니다. 봅슬레이 종목은 남자 4인승, 2인승, 여자 2인승 총 3개의 종목이 진행됩니다. 선수들은 세계선수권대회와 올림픽에서 총 4차례 활주하며 그 시간을 합산해 순위를 결정합니다.');");
@@ -61,10 +57,6 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         sql = "create table datetable(_id INTEGER PRIMARY KEY AUTOINCREMENT, usedate text, unlocktime integer)";
         db.execSQL(sql);
         db.execSQL("insert into datetable (usedate, unlocktime) values (date('now','localtime'), 0);");
-
-//        ContentValues value = new ContentValues();
-//        value.put("date", );
-//        value.put("unlock", 0);
 
     }
 
