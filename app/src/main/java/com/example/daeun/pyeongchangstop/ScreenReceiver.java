@@ -12,11 +12,6 @@ public class ScreenReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
-//        if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
-//            Intent i = new Intent(context, LockScreenActivity.class);
-//            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            context.startActivity(i);
-//        }
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
             Log.e("onReceive: ", "SCREEN_OFF");
             Intent i = new Intent(context, LockScreenActivity.class);

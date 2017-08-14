@@ -53,11 +53,10 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL("insert into locktable (title, content) values ('스노보드','스노보드는 보드를 이용하여 슬로프를 질주하는 종목으로 1960년대 미국에서 스포츠로 발전하여 세계 각국에서 남녀노소 누구나 즐길 수 있는 스포츠로 발전되었으며 1998년 일본 나가노 동계올림픽대회에서 정식종목으로 채택되었습니다.');");
         db.execSQL("insert into locktable (title, content) values ('스피드 스케이팅','스피드 스케이팅은 스케이트를 신은 2명의 선수가 동시에 출발하여 400m 의 아이스링크 트랙 위에서 속도를 겨루는 빙상경기이며, 400m의 코스는 인코스와 아웃코스로 구분하며, 2인 1조의 주자가 1주 할 때마다 정해진 교차 구역에서 서로 활주로를 바꾸게 됩니다.');");
 
-        // 날짜, 잠금해제 횟수 테이블 생성 및 초기화
-        sql = "create table datetable(_id INTEGER PRIMARY KEY AUTOINCREMENT, usedate text, unlocktime integer)";
+        // 날짜, 잠금해제 횟수, 로그인 정보 테이블 생성 및 초기화
+        sql = "create table datetable(_id INTEGER PRIMARY KEY AUTOINCREMENT, usedate text, unlocktime integer, usrlogin integer)";
         db.execSQL(sql);
-        db.execSQL("insert into datetable (usedate, unlocktime) values (date('now','localtime'), 0);");
-
+        db.execSQL("insert into datetable (usedate, unlocktime, usrlogin) values (date('now','localtime'), 0, -1);");
     }
 
     @Override

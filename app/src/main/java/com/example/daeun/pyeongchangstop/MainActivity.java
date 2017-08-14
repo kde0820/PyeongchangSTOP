@@ -1,5 +1,6 @@
 package com.example.daeun.pyeongchangstop;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,11 +20,13 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase db;
     Cursor ucursor, lcursor;
     int usrlogin;
+    public static Activity mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainActivity = MainActivity.this;
 
         // 잠금화면 서비스
         Intent intent = new Intent(getApplicationContext(), ScreenService.class);

@@ -69,7 +69,6 @@ public class LockScreenActivity extends AppCompatActivity {
             apptext.setText("+ 5point");
         }
 
-
         // 디비에 저장된 컨텐츠 표시
         cursor = db.rawQuery("SELECT * FROM locktable", null); // 잠금화면 표시 내용 가져오기
         Random random = new Random();
