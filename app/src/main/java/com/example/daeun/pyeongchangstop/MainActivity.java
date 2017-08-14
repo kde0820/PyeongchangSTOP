@@ -12,39 +12,64 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView quizButton, timeButton, noticeButton, pointButton, facilityButton, userButton;
+    ImageView quizButton, timeButton, noticeButton, storeButton;
+    TextView name, pointText, loginText;
+    Button loginbutton;
     MySQLiteOpenHelper myDB;
     SQLiteDatabase db;
-    Cursor ucursor;
+    Cursor ucursor, lcursor;
+    int usrlogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 잠금화면 서비스
+        Intent intent = new Intent(getApplicationContext(), ScreenService.class);
+        startService(intent);
+
+        // 디비 정보 가져오기
         myDB = new MySQLiteOpenHelper(getApplicationContext(), "pcSTOP.db", null, 1);
         db = myDB.getWritableDatabase();
         ucursor = db.rawQuery("SELECT * FROM usrtable", null); // 사용자 정보 가져오기
         ucursor.moveToFirst();
 
-        TextView name = (TextView) findViewById(R.id.usrName);
+        lcursor = db.rawQuery("SELECT * FROM datetable", null);
+        lcursor.moveToFirst();
+        usrlogin = lcursor.getInt(3); // 로그인 여부 판단
+
+        name = (TextView) findViewById(R.id.usrName);
         name.setText(ucursor.getString(1));
 
-        Intent intent = new Intent(getApplicationContext(), ScreenService.class);
-        startService(intent); // 잠금화면 서비스 시작
-
-        TextView textView = (TextView) findViewById(R.id.usrPoint);
-        textView.setText("현재 포인트: " + ucursor.getInt(6));
+        pointText = (TextView) findViewById(R.id.usrPoint);
+        pointText.setText("현재 포인트: " + ucursor.getInt(6));
 
 
-        Button loginbutton = (Button) findViewById(R.id.loginpage);
-        loginbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+        // 로그인 여부(usrlogin)에 따라 상단 버튼, 텍스트 내용 변경
+        loginText = (TextView) findViewById(R.id.loginText);
+        loginbutton = (Button) findViewById(R.id.loginButton);
+        if (usrlogin == -1){ // 로그인 하지 않은 경우
+            loginbutton.setText("로그인");
+            loginbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+            loginText.setText("로그인이 필요합니다.");
+        } else{
+            loginbutton.setText("마이페이지");
+            loginbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                    startActivity(intent);
+                }
+            });
+            loginText.setText("로그인 완료");
+        }
 
         // 각 버튼을 누르면 화면이 넘어감.
         quizButton = (ImageView) findViewById(R.id.quizButton);
@@ -78,37 +103,14 @@ public class MainActivity extends AppCompatActivity {
 
         );
 
-        pointButton = (ImageView) findViewById(R.id.pointButton);
-        pointButton.setOnClickListener(new View.OnClickListener(){
-                                           @Override
-                                           public void onClick(View v) {
-                                               Intent intent = new Intent(MainActivity.this, PointActivity.class);
-                                               startActivity(intent);
-                                           }
-                                       }
-
-        );
-
-        facilityButton = (ImageView) findViewById(R.id.facilityButton);
-        facilityButton.setOnClickListener(new View.OnClickListener(){
+        storeButton = (ImageView) findViewById(R.id.storeButton);
+        storeButton.setOnClickListener(new View.OnClickListener(){
                                               @Override
                                               public void onClick(View v) {
-                                                  Intent intent = new Intent(MainActivity.this, FacilityActivity.class);
+                                                  Intent intent = new Intent(MainActivity.this, StoreActivity.class);
                                                   startActivity(intent);
                                               }
                                           }
         );
-
-        userButton = (ImageView) findViewById(R.id.userButton);
-        userButton.setOnClickListener(new View.OnClickListener(){
-                                          @Override
-                                          public void onClick(View v) {
-                                              Intent intent = new Intent(MainActivity.this, UserActivity.class);
-                                              startActivity(intent);
-                                          }
-                                      }
-        );
-        //
-
     }
 }

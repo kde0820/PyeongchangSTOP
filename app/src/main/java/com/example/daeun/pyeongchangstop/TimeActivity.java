@@ -3,6 +3,7 @@ package com.example.daeun.pyeongchangstop;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -28,6 +29,7 @@ public class TimeActivity extends AppCompatActivity {
                         "document.getElementsByClassName('sponsor-list')[0].style.display='none'; " +
                         "document.getElementsByClassName('footer')[0].style.display='none'; " +
                         "})()");
+                webView.setVisibility(View.VISIBLE);
             }
         });
         webView.loadUrl("https://www.pyeongchang2018.com/ko/schedule");
