@@ -35,18 +35,12 @@ public class MainActivity extends AppCompatActivity {
         // 디비 정보 가져오기
         myDB = new MySQLiteOpenHelper(getApplicationContext(), "pcSTOP.db", null, 1);
         db = myDB.getWritableDatabase();
-        ucursor = db.rawQuery("SELECT * FROM usrtable", null); // 사용자 정보 가져오기
-        ucursor.moveToFirst();
 
         lcursor = db.rawQuery("SELECT * FROM datetable", null);
         lcursor.moveToFirst();
         usrlogin = lcursor.getInt(3); // 로그인 여부 판단
 
-        name = (TextView) findViewById(R.id.usrName);
-        name.setText(ucursor.getString(1));
-
-        pointText = (TextView) findViewById(R.id.usrPoint);
-        pointText.setText("현재 포인트: " + ucursor.getInt(6));
+        ucursor = db.rawQuery("SELECT * FROM usrtable", null); // 사용자 정보 가져오기
 
 
         // 로그인 여부(usrlogin)에 따라 상단 버튼, 텍스트 내용 변경
@@ -71,7 +65,11 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            loginText.setText("로그인 완료");
+            ucursor.moveToPosition(usrlogin);
+            loginText.setText(ucursor.getString(1) + "님");
+
+            pointText = (TextView) findViewById(R.id.usrPoint);
+            pointText.setText("현재 포인트: " + ucursor.getInt(6));
         }
 
         // 각 버튼을 누르면 화면이 넘어감.

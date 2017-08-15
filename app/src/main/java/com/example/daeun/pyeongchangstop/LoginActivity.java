@@ -46,9 +46,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 db.execSQL("update datetable set usrlogin=" + usrlogin + " where _id=1;");
-                mainActivity.finish();
+                mainActivity.finish(); // 이전의 메인 엑티비티 종료
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
+                startActivity(intent); // 새로운 메인 엑티비티 시작
                 finish();
             }
         });
