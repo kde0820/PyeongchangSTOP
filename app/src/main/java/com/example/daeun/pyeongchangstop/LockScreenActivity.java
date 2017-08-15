@@ -22,14 +22,11 @@ public class LockScreenActivity extends AppCompatActivity {
     SeekBar slidingButton;
     MySQLiteOpenHelper myDB;
     SQLiteDatabase db;
-    Cursor ucursor;
-    Cursor cursor;
-    Cursor dcursor;
-    TextView content, title, apptext;
+    Cursor ucursor, cursor, dcursor;
+    TextView content, title, unlockText;
+    int dbidate, current, dbcount, usrlogin;
     String dbdate;
-    int dbidate;
-    int current;
-    int dbcount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +51,22 @@ public class LockScreenActivity extends AppCompatActivity {
         while (tokenizer.hasMoreTokens()) {
             dbdate = tokenizer.nextToken();
         }
-        dbidate = Integer.parseInt(dbdate);
+        dbidate = Integer.parseInt(dbdate); // DB에 저장된 날짜
         long now = System.currentTimeMillis();
         Date date = new Date(now);
         SimpleDateFormat sdf = new SimpleDateFormat("dd");
         String getTime = sdf.format(date);
-        current = Integer.parseInt(getTime);
+        current = Integer.parseInt(getTime); // 현재 날짜
+
+        // 로그인 여부를 확인하기 위한 변수
+        usrlogin = dcursor.getInt(3);
 
         // 잠금화면 포인트 획득 횟수에 따라 text 내용 보여주기
-        apptext = (TextView) findViewById(R.id.appText);
-        if (dbcount == 5) {
-            apptext.setText("앱 실행하기");
+        unlockText = (TextView) findViewById(R.id.unlockText);
+        if (dbcount == 5 || usrlogin == -1) { // 하루 제한을 넘었거나 로그인을 하지 않은경우
+            unlockText.setText("잠금 해제");
         } else {
-            apptext.setText("+ 5point");
+            unlockText.setText("+ 5point");
         }
 
         // 디비에 저장된 컨텐츠 표시
@@ -96,24 +96,23 @@ public class LockScreenActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (seekBar.getProgress() >= 90) { // 잠금해제
-                    finish();
-                } else if (seekBar.getProgress() <= 10) { // 앱 실행
                     if (current > dbidate) { // 하루 지나면 unlocktime 초기화
                         db.execSQL("update datetable set usedate=date('now','localtime'), unlocktime=0 where _id=1;");
                     }
-
-                    Toast.makeText(getApplicationContext(), (dbcount + 1) + "", Toast.LENGTH_SHORT).show();
-
                     if (dbcount == 5) {
                         Toast.makeText(getApplicationContext(), "하루 제한 초과", Toast.LENGTH_SHORT).show();
+                    } else if(usrlogin == -1){
+                        Toast.makeText(getApplicationContext(), "로그인 필요", Toast.LENGTH_SHORT).show();
                     } else {
+                        Toast.makeText(getApplicationContext(), (dbcount + 1) + "", Toast.LENGTH_SHORT).show();
                         ContentValues value = new ContentValues();
                         value.put("point", ucursor.getInt(6) + 5);
                         db.update("usrtable", value, "_id=?", new String[]{String.valueOf(1)}); // 5 포인트 증가시켜 디비 업데이트
                         db.execSQL("update datetable set usedate=date('now','localtime'), unlocktime=" + (dbcount + 1) + " where _id=1;");
+                        Toast.makeText(getApplicationContext(), "적립완료", Toast.LENGTH_SHORT).show();
                     }
-
-
+                    finish();
+                } else if (seekBar.getProgress() <= 10) { // 앱 실행
                     Intent intent = new Intent(LockScreenActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
