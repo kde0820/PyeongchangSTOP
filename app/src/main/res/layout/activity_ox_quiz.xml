@@ -4,13 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.daeun.pyeongchangstop.PointActivity">
+    tools:context="com.example.daeun.pyeongchangstop.OxQuizActivity">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Point"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="23dp" />
 </android.support.constraint.ConstraintLayout>

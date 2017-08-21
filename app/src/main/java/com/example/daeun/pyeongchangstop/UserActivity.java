@@ -34,7 +34,7 @@ public class UserActivity extends AppCompatActivity {
         nametext = (TextView) findViewById(R.id.nameText);
         pointtext = (TextView) findViewById(R.id.pointText);
         nametext.setText(ucursor.getString(1));
-        pointtext.setText("보유 포인트: "+ucursor.getInt(6) + "point");
+        pointtext.setText("보유 포인트: " + ucursor.getInt(7) + "point");
 
         logoutbutton = (Button) findViewById(R.id.logoutButton);
         logoutbutton.setOnClickListener(new View.OnClickListener() {

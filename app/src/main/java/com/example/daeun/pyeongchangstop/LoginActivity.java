@@ -40,13 +40,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // 로그인 버튼 누르면 DB에 로그인 정보 저장 (테스트)
+        // 로그인 버튼 누르면 DB에 로그인 정보 저장
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int logIndex = myDB.select(idText.getText().toString(), passwordText.getText().toString());
-                Toast.makeText(getApplicationContext(), logIndex + "", Toast.LENGTH_SHORT).show();
-
+//                Toast.makeText(getApplicationContext(), logIndex + "", Toast.LENGTH_SHORT).show();
                 if (logIndex == -1) {
                     Toast.makeText(getApplicationContext(), "아이디가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                 }else if(logIndex == -2){

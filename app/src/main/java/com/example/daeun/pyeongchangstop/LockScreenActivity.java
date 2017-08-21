@@ -101,13 +101,11 @@ public class LockScreenActivity extends AppCompatActivity {
                     }
                     if (dbcount == 5) {
                         Toast.makeText(getApplicationContext(), "하루 제한 초과", Toast.LENGTH_SHORT).show();
-                    } else if(usrlogin == -1){
+                    } else if (usrlogin == -1) {
                         Toast.makeText(getApplicationContext(), "로그인 필요", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getApplicationContext(), (dbcount + 1) + "", Toast.LENGTH_SHORT).show();
-                        ContentValues value = new ContentValues();
-                        value.put("point", ucursor.getInt(6) + 5);
-                        db.update("usrtable", value, "_id=?", new String[]{String.valueOf(1)}); // 5 포인트 증가시켜 디비 업데이트
+//                        Toast.makeText(getApplicationContext(), (dbcount + 1) + "", Toast.LENGTH_SHORT).show();
+                        db.execSQL("update usrtable set point=" + (ucursor.getInt(7) + 5) + " where _id=" + (usrlogin + 1) + ";"); // 5 포인트 증가시켜 디비 업데이트
                         db.execSQL("update datetable set usedate=date('now','localtime'), unlocktime=" + (dbcount + 1) + " where _id=1;");
                         Toast.makeText(getApplicationContext(), "적립완료", Toast.LENGTH_SHORT).show();
                     }
@@ -132,5 +130,10 @@ public class LockScreenActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        return;
     }
 }

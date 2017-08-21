@@ -57,9 +57,9 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL("insert into locktable (title, content) values ('스피드 스케이팅','스피드 스케이팅은 스케이트를 신은 2명의 선수가 동시에 출발하여 400m 의 아이스링크 트랙 위에서 속도를 겨루는 빙상경기이며, 400m의 코스는 인코스와 아웃코스로 구분하며, 2인 1조의 주자가 1주 할 때마다 정해진 교차 구역에서 서로 활주로를 바꾸게 됩니다.');");
 
         // 날짜, 잠금해제 횟수, 로그인 정보 테이블 생성 및 초기화
-        sql = "create table datetable(_id INTEGER PRIMARY KEY AUTOINCREMENT, usedate text, unlocktime integer, usrlogin integer)";
+        sql = "create table datetable(_id INTEGER PRIMARY KEY AUTOINCREMENT, usedate text, unlocktime integer, usrlogin integer, usrquiz integer)";
         db.execSQL(sql);
-        db.execSQL("insert into datetable (usedate, unlocktime, usrlogin) values (date('now','localtime'), 0, -1);");
+        db.execSQL("insert into datetable (usedate, unlocktime, usrlogin, usrquiz) values (date('now','localtime'), 0, -1, 5);");
     }
 
     @Override
@@ -90,7 +90,6 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
             if(idText.equals(userId)){
                 if(passText.equals(c.getString(3))){
                     flag = primaryNum;
-                    Log.e("select: ", flag + "");
                     return flag;
                 } else{
                     return -2;
@@ -104,11 +103,6 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     //  insert: 삽입문 추가. insert into 테이블명 (필드1, 필드2) (값1, 값2)
     public void insert(String idText, String nameText, String passwordText, String ageText, String telText, String emailText) {
         SQLiteDatabase db = getWritableDatabase();
-        //  테이블 만들기. create table 테이블명(필드 속성, ....)
-        //String sql = "create table mytable4(id integer primary key autoincrement, name text, password text, age integer, tel text, email text);";
-        //db.execSQL(sql);
-        //db.execSQL("insert into mytable4 (name, password) values ('"+nameText+"', '"+passwordText+"' );");
-        //userId text, name text, password text, age integer, telephone text, email text, point integer
         db.execSQL("insert into usrtable (userId, name, password, age, telephone, email) values ('"+idText+"', '"+nameText+"', '"+passwordText+"', '"+ageText+"', '"+telText+"', '"+emailText+"' );");
         db.close();
     }

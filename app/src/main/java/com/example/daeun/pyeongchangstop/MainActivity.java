@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase db;
     Cursor ucursor, lcursor;
     int usrlogin;
+    long pressedTime;
     public static Activity mainActivity;
 
     @Override
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainActivity = MainActivity.this;
+        pressedTime = 0;
 
         // 잠금화면 서비스
         Intent intent = new Intent(getApplicationContext(), ScreenService.class);
@@ -113,5 +116,15 @@ public class MainActivity extends AppCompatActivity {
                                               }
                                           }
         );
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(System.currentTimeMillis() - pressedTime < 1500){
+            finish();
+            return;
+        }
+        Toast.makeText(getApplicationContext(),"뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        pressedTime = System.currentTimeMillis();
     }
 }
