@@ -16,7 +16,7 @@ public class UserActivity extends AppCompatActivity {
     SQLiteDatabase db;
     Cursor lcursor, ucursor;
     int usrlogin;
-
+    MainActivity mainActivity = (MainActivity) MainActivity.mainActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +41,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 db.execSQL("update datetable set usrlogin=-1 where _id=1;"); // 로그아웃 상태로 바꿈
+                mainActivity.finish();
                 Intent intent = new Intent(UserActivity.this, MainActivity.class);
                 startActivity(intent); // 새로운 메인 엑티비티 시작
                 finish();

@@ -66,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             ucursor.moveToPosition(usrlogin);
-            loginText.setText(ucursor.getString(1) + "님");
+            loginText.setText(ucursor.getString(2) + "님");
 
             pointText = (TextView) findViewById(R.id.usrPoint);
-            pointText.setText("현재 포인트: " + ucursor.getInt(6));
+            pointText.setText("현재 포인트: " + ucursor.getInt(7));
         }
 
         // 각 버튼을 누르면 화면이 넘어감.

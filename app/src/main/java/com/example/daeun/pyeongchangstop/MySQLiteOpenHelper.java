@@ -2,8 +2,10 @@ package com.example.daeun.pyeongchangstop;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by daeun on 2017-08-08.
@@ -21,15 +23,16 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         // 최초에 데이터베이스가 없을경우, 데이터베이스 생성을 위해 호출됨
         // (이미 데이터 베이스가 만들어 졌다면, 더이상 수정, 변경 불가. 다른 테이블을 이용하고 싶으면 새로 선언문을 날려야함. )
         // 테이블 생성하는 코드를 작성한다
-        String sql = "create table usrtable(_id INTEGER PRIMARY KEY AUTOINCREMENT, name text, password text, age integer, tel text, email text, point integer);";
+        String sql = "create table usrtable(_id INTEGER PRIMARY KEY AUTOINCREMENT, userId text, name text, password text, age integer, telephone text, email text, point integer);";
         db.execSQL(sql);
 
         // 사용자 정보 테이블 생성 및 초기화
         ContentValues val = new ContentValues();
+        val.put("userId","kde0820");
         val.put("name","kimdaeun");
         val.put("password","kkkk");
         val.put("age", 22);
-        val.put("tel", "01000000000");
+        val.put("telephone", "01000000000");
         val.put("email", "naver");
         val.put("point", 0);
         db.insert("usrtable", null, val);
@@ -71,5 +74,42 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         sql = "drop table datetable";
         db.execSQL(sql);
         onCreate(db); // 다시 테이블 생성
+    }
+
+    //  select: 데이터베이스에 저장되어있는 데이터를 검색. select * from 테이블 명
+    public int select(String idText, String passText) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor c = db.rawQuery("select * from usrtable;", null);
+        boolean b = c.moveToFirst();
+        int flag = -1;
+
+        while(b) {
+            int primaryNum = c.getInt(0);
+            String userId = c.getString(1);
+            //  아이디와 db에 저장된 아이디가 같으면 primaryNum 리턴
+            if(idText.equals(userId)){
+                if(passText.equals(c.getString(3))){
+                    flag = primaryNum;
+                    Log.e("select: ", flag + "");
+                    return flag;
+                } else{
+                    return -2;
+                }
+            }
+            b = c.moveToNext();
+        }
+        return flag;
+    }
+
+    //  insert: 삽입문 추가. insert into 테이블명 (필드1, 필드2) (값1, 값2)
+    public void insert(String idText, String nameText, String passwordText, String ageText, String telText, String emailText) {
+        SQLiteDatabase db = getWritableDatabase();
+        //  테이블 만들기. create table 테이블명(필드 속성, ....)
+        //String sql = "create table mytable4(id integer primary key autoincrement, name text, password text, age integer, tel text, email text);";
+        //db.execSQL(sql);
+        //db.execSQL("insert into mytable4 (name, password) values ('"+nameText+"', '"+passwordText+"' );");
+        //userId text, name text, password text, age integer, telephone text, email text, point integer
+        db.execSQL("insert into usrtable (userId, name, password, age, telephone, email) values ('"+idText+"', '"+nameText+"', '"+passwordText+"', '"+ageText+"', '"+telText+"', '"+emailText+"' );");
+        db.close();
     }
 }

@@ -40,20 +40,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="나이"
-        android:inputType="textPersonName" />
+        android:inputType="number" />
+
     <EditText
         android:id="@+id/telText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="전화번호"
-        android:inputType="textPersonName" />
+        android:inputType="phone" />
 
     <EditText
         android:id="@+id/emailText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="이메일"
-        android:inputType="textPersonName" />
+        android:inputType="textEmailAddress" />
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/android_material_design_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="국적 선택"
+        android:textColorHint="#05ab9a" />
 
     <Button
         android:id="@+id/registerButton"

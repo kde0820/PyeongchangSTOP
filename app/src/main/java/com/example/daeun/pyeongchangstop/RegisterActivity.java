@@ -1,5 +1,6 @@
 package com.example.daeun.pyeongchangstop;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -7,24 +8,282 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class RegisterActivity extends AppCompatActivity {
     private MySQLiteOpenHelper helper;
     String dbName = "st_file.db";
     int dbVersion = 1; // 데이터베이스 버전
+
     private SQLiteDatabase db;
     String tag = "SQLite"; // Log 에 사용할 tag
+    //TextView nationText;
+    String[] nation = {"AD - 안도라",
+            "AE - 아랍 에미리트 연방",
+            "AF - 아프가니스탄",
+            "AG - 안티과 바부다",
+            "AI - 앵귈라",
+            "AL - 알바니아",
+            "AM - 아르메니아",
+            "AO - 앙골라",
+            "AQ - 남극 대륙",
+            "AR - 아르헨티나",
+            "AS - 미국령 사모아",
+            "AT - 오스트리아",
+            "AU - 호주",
+            "AW - 아루바",
+            "AZ - 아제르바이잔",
+            "BA - 보스니아 헤르체고비나",
+            "BB - 바베이도스",
+            "BD - 방글라데시",
+            "BE - 벨기에",
+            "BF - 부르키나 파소",
+            "BG - 불가리아",
+            "BH - 바레인",
+            "BI - 부룬디",
+            "BJ - 베넹",
+            "BL - 생바르텔르미섬",
+            "BM - 버뮤다",
+            "BN - 브루나이",
+            "BO - 볼리비아",
+            "BR - 브라질",
+            "BS - 바하마 제도",
+            "BT - 부탄",
+            "BV - 부베이 섬",
+            "BW - 보츠와나",
+            "BY - 벨로루시",
+            "BZ - 벨리즈",
+            "CA - 캐나다",
+            "CC - 코코스 제도",
+            "CD - 콩고 인민민주주의 공화국",
+            "CF - 중앙 아프리카 공화국",
+            "CG - 콩고 민주 공화국",
+            "CH - 스위스",
+            "CI - 코트디부아르",
+            "CK - 쿡 제도",
+            "CL - 칠레",
+            "CM - 카메룬",
+            "CN - 중국",
+            "CO - 콜롬비아",
+            "CR - 코스타리카",
+            "CU - 쿠바",
+            "CV - 카보베르데",
+            "CW - 큐라소",
+            "CX - 크리스마스 섬",
+            "CY - 키프로스",
+            "CZ - 체코 공화국",
+            "DE - 독일",
+            "DJ - 지부티",
+            "DK - 덴마크",
+            "DM - 도미니카",
+            "DO - 도미니카 공화국",
+            "DZ - 알제리",
+            "EC - 에콰도르",
+            "EE - 에스토니아",
+            "EG - 이집트",
+            "EH - 서부 사하라",
+            "ER - 에리트레아",
+            "ES - 스페인",
+            "ET - 에티오피아",
+            "FI - 핀란드",
+            "FJ - 피지",
+            "FK - 포클랜드 제도(말비나스)",
+            "FM - 미크로네시아 연방국",
+            "FO - 페로 제도",
+            "FR - 프랑스",
+            "FX - 프랑스령",
+            "GA - 가봉",
+            "GB - 영국",
+            "GD - 그레나다",
+            "GE - 조지아",
+            "GF - 프랑스령 기아나",
+            "GG - 건지 섬",
+            "GH - 가나",
+            "GI - 지브롤터",
+            "GL - 그린란드",
+            "GM - 감비아",
+            "GN - 기니",
+            "GP - 과들루프",
+            "GQ - 적도 기니",
+            "GR - 그리스",
+            "GS - 사우스조지아 사우스샌드위치 제도",
+            "GT - 과테말라",
+            "GU - 괌",
+            "GW - 기니비사우",
+            "GY - 가이아나",
+            "HK - 홍콩",
+            "HM - 허드 섬 맥도날드 군도",
+            "HN - 온두라스",
+            "HR - 크로아티아",
+            "HT - 아이티",
+            "HU - 헝가리",
+            "ID - 인도네시아",
+            "IE - 아일랜드",
+            "IL - 이스라엘",
+            "IM - 맨섬",
+            "IN - 인도",
+            "IO - 영국령 인도양 식민지",
+            "IQ - 이라크",
+            "IR - 이란",
+            "IS - 아이슬란드",
+            "IT - 이탈리아",
+            "JE - 저지 섬",
+            "JM - 자메이카",
+            "JO - 요르단",
+            "JP - 일본",
+            "KE - 케냐",
+            "KG - 키르기스스탄",
+            "KH - 캄보디아",
+            "KI - 키르바시",
+            "KM - 코모로",
+            "KN - 세인트 키츠 네비스",
+            "KP - 북한",
+            "KR - 대한민국",
+            "KW - 쿠웨이트",
+            "KY - 케이맨 제도",
+            "KZ - 카자흐스탄",
+            "LA - 라오스",
+            "LB - 레바논",
+            "LC - 세인트 루시아",
+            "LI - 리히텐슈타인",
+            "LK - 스리랑카",
+            "LR - 리베리아",
+            "LS - 레소토",
+            "LT - 리투아니아",
+            "LU - 룩셈부르크",
+            "LV - 라트비아",
+            "LY - 리비아",
+            "MA - 모로코",
+            "MC - 모나코",
+            "MD - 몰도바공화국",
+            "ME - 몬테네그로",
+            "MF - 세인트 마틴섬",
+            "MG - 마다가스카르",
+            "MH - 마셜 제도",
+            "MK - 마케도니아",
+            "ML - 말리",
+            "MM - 미얀마",
+            "MN - 몽골",
+            "MO - 마카오",
+            "MP - 북마리아나 제도",
+            "MQ - 마르티니크",
+            "MR - 모리타니아",
+            "MS - 몬트세라트",
+            "MT - 몰타섬",
+            "MU - 모리셔스",
+            "MV - 몰디브",
+            "MW - 말라위",
+            "MX - 멕시코",
+            "MY - 말레이시아",
+            "MZ - 모잠비크",
+            "NA - 나미비아",
+            "NC - 뉴칼레도니아",
+            "NE - 니제르",
+            "NF - 노퍽 섬",
+            "NG - 나이지리아",
+            "NI - 니카라과",
+            "NL - 네덜란드",
+            "NO - 노르웨이",
+            "NP - 네팔",
+            "NR - 나우루",
+            "NU - 니우에 섬",
+            "NZ - 뉴질랜드",
+            "OM - 오만 토후국",
+            "PA - 파나마",
+            "PE - 페루",
+            "PF - 프랑스령 폴리네시아",
+            "PG - 파푸아뉴기니",
+            "PH - 필리핀",
+            "PK - 파키스탄",
+            "PL - 폴란드",
+            "PM - 생 피에르 미클롱",
+            "PN - 피트케언 섬",
+            "PR - 푸에르토리코",
+            "PS - 팔레스타인 자치구",
+            "PS - 웨스트 뱅크",
+            "PT - 포르투갈",
+            "PW - 팔라우",
+            "PY - 파라과이",
+            "QA - 카타르",
+            "RE - 레유니온 아일랜드",
+            "RO - 루마니아",
+            "RS - 세르비아",
+            "RU - 러시아",
+            "RW - 르완다",
+            "SA - 사우디아라비아",
+            "SB - 솔로몬 제도",
+            "SC - 세이셸",
+            "SD - 수단",
+            "SE - 스웨덴",
+            "SG - 싱가포르",
+            "SH - 세인트헬레나 어센션 트리스탄다쿠냐",
+            "SI - 슬로베니아",
+            "SJ - 스발바르 제도",
+            "SK - 슬로바키아",
+            "SL - 시에라리온",
+            "SM - 산마리노",
+            "SN - 세네갈",
+            "SO - 소말리아",
+            "SR - 수리남",
+            "SS - 남수단",
+            "ST - 상투메 프린시페",
+            "SV - 엘살바도르",
+            "SX - 신트마르턴",
+            "SY - 시리아",
+            "SZ - 스와질랜드",
+            "TC - 터크스카이코스 제도",
+            "TD - 차드",
+            "TF - 프랑스령 남부와 남극지역",
+            "TG - 토고",
+            "TH - 태국",
+            "TJ - 타지키스탄",
+            "TK - 토켈라우",
+            "TL - 동티모르",
+            "TM - 투르크메니스탄",
+            "TN - 튀니지",
+            "TO - 통가",
+            "TR - 터키",
+            "TT - 트리니다드 토바고",
+            "TV - 투발루",
+            "TW - 타이완",
+            "TZ - 탄자니아",
+            "UA - 우크라이나",
+            "UG - 우간다",
+            "UM - 미국령 소군도",
+            "US - 미국",
+            "UY - 우르과이",
+            "UZ - 우즈베키스탄",
+            "VA - 교황청(바티칸시)",
+            "VC - 세인트 빈센트 그레나딘",
+            "VE - 베네수엘라",
+            "VG - 영국령 버진 아일랜드",
+            "VI - 버진 아일랜드",
+            "VN - 베트남",
+            "VU - 바누아투",
+            "WF - 왈리스 퓌튀나",
+            "WS - 사모아",
+            "XK - 코소보",
+            "YE - 예멘",
+            "YT - 마요트 섬",
+            "ZA - 남아프리카",
+            "ZM - 잠비아",
+            "ZW - 짐바브웨"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // 회원 정보를 관리할 데이터베이스 생성
+        final MySQLiteOpenHelper mySQLiteOpenHelper = new MySQLiteOpenHelper(getApplicationContext(), "memberInfo.db", null, 1);
+
+        //  회원 정보 입력란
         final EditText idText = (EditText) findViewById(R.id.idText);
-        //디자인에 있는 아이디 텍스트안에 이름을 가지는 아이디값을  idText변수에 객체로 저장
         final EditText nameText = (EditText) findViewById(R.id.nameText);
         final EditText passwordText = (EditText) findViewById(R.id.passwordText);
         final EditText passwordcheckText = (EditText) findViewById(R.id.passwordchackText);
@@ -32,81 +291,62 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText telText = (EditText) findViewById(R.id.telText);
         final EditText emailText = (EditText) findViewById(R.id.emailText);
 
+        //  국가 리스트...
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, nation);
+        MaterialBetterSpinner betterSpinner = (MaterialBetterSpinner) findViewById(R.id.android_material_design_spinner);
+        betterSpinner.setAdapter(arrayAdapter);
+
+
         Button registerButton = (Button) findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(idText.getText().toString().length()==0){
-                    Toast.makeText(RegisterActivity.this,"아이디를 입력하세요", Toast.LENGTH_SHORT).show();
+                if (idText.getText().toString().length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "아이디를 입력하세요", Toast.LENGTH_SHORT).show();
                     idText.requestFocus();
                     return;
-                }
-                if(nameText.getText().toString().length()==0){
-                    Toast.makeText(RegisterActivity.this,"이름을 입력하세요", Toast.LENGTH_SHORT).show();
+                } else if (nameText.getText().toString().length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "이름을 입력하세요", Toast.LENGTH_SHORT).show();
                     nameText.requestFocus();
                     return;
-                }
-                if(passwordText.getText().toString().length()==0){
-                    Toast.makeText(RegisterActivity.this,"비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
+                } else if (passwordText.getText().toString().length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
                     passwordText.requestFocus();
                     return;
-                }
-                if(passwordcheckText.getText().toString().length()==0){
-                    Toast.makeText(RegisterActivity.this,"다시 한 번 비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
+                } else if (passwordcheckText.getText().toString().length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "다시 한 번 비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
                     passwordcheckText.requestFocus();
                     return;
-                }
-                if(!passwordText.getText().toString().equals(passwordcheckText.getText().toString())){
-                    Toast.makeText(RegisterActivity.this,"비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                } else if (!passwordText.getText().toString().equals(passwordcheckText.getText().toString())) {
+                    Toast.makeText(RegisterActivity.this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                     passwordText.setText("");
                     passwordcheckText.setText("");
                     passwordText.requestFocus();
                     return;
-                }
-
-                if(ageText.getText().toString().length()==0){
-                    Toast.makeText(RegisterActivity.this,"나이를 입력하세요", Toast.LENGTH_SHORT).show();
+                } else if (ageText.getText().toString().length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "나이를 입력하세요", Toast.LENGTH_SHORT).show();
                     ageText.requestFocus();
                     return;
-                }
-                if(telText.getText().toString().length()==0){
-                    Toast.makeText(RegisterActivity.this,"전화번호를 입력하세요", Toast.LENGTH_SHORT).show();
+                } else if (telText.getText().toString().length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "전화번호를 입력하세요", Toast.LENGTH_SHORT).show();
                     telText.requestFocus();
                     return;
-                }
-                if(emailText.getText().toString().length()==0){
-                    Toast.makeText(RegisterActivity.this,"이메일을 입력하세요", Toast.LENGTH_SHORT).show();
+                } else if (emailText.getText().toString().length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "이메일을 입력하세요", Toast.LENGTH_SHORT).show();
                     emailText.requestFocus();
                     return;
+                } else {
+                    //  db에 저장
+                    mySQLiteOpenHelper.insert(idText.getText().toString(), nameText.getText().toString(), passwordText.getText().toString(), ageText.getText().toString(), telText.getText().toString(), emailText.getText().toString());
+                    Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show();
+                    Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                    RegisterActivity.this.startActivity(mainIntent);
                 }
 
-                insert(nameText, passwordText, ageText, telText, emailText);
-                Toast.makeText(getApplicationContext(),"insert",Toast.LENGTH_LONG).show();
             }
         });
+        //db = helper.getWritableDatabase(); // 읽고 쓸수 있는 DB
 
-        helper = new MySQLiteOpenHelper(
-                this,  // 현재 화면의 제어권자
-                dbName,// db 이름
-                null,  // 커서팩토리-null : 표준커서가 사용됨
-                dbVersion);       // 버전
-
-        try {
-//         // 데이터베이스 객체를 얻어오는 다른 간단한 방법
-//         db = openOrCreateDatabase(dbName,  // 데이터베이스파일 이름
-//                          Context.MODE_PRIVATE, // 파일 모드
-//                          null);    // 커서 팩토리
-//
-//         String sql = "create table mytable(id integer primary key autoincrement, name text);";
-//        db.execSQL(sql);
-
-            db = helper.getWritableDatabase(); // 읽고 쓸수 있는 DB
-            //db = helper.getReadableDatabase(); // 읽기 전용 DB select문
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-            Log.e(tag, "데이터베이스를 얻어올 수 없음");
-            finish(); // 액티비티 종료
-        }
 
         //insert (); // insert 문 - 삽입추가
 
@@ -135,21 +375,21 @@ public class RegisterActivity extends AppCompatActivity {
     //  select: 데이터베이스에 저장되어있는 데이터를 검색. select * from 테이블 명
     void select() {
         Cursor c = db.rawQuery("select * from mytable4;", null);
-        while(c.moveToNext()) {
+        while (c.moveToNext()) {
             int id = c.getInt(0);
             String name = c.getString(1);
-            Log.d(tag,"id:"+id+",name:"+name);
+            Log.d(tag, "id:" + id + ",name:" + name);
         }
     }
 
-    //  insert: 삽입문 추가. insert into 테이블명 (필드1, 필드2) (값1, 값2)
-    void insert( EditText nameText, EditText passwordText, EditText ageText, EditText telText, EditText emailText) {
-        //  테이블 만들기. create table 테이블명(필드 속성, ....)
-        String sql = "create table mytable4(id integer primary key autoincrement, name text, password text, age integer, tel text, email text);";
-        db.execSQL(sql);
-        //db.execSQL("insert into mytable4 (name, password) values ('"+nameText+"', '"+passwordText+"' );");
-        db.execSQL("insert into mytable4 (name, password) values ('"+nameText+"', '"+passwordText+"', '"+ageText+"', '"+telText+"', '"+emailText+"' );");
-        Log.d(tag, "insert 성공~!");
-    }
+//    //  insert: 삽입문 추가. insert into 테이블명 (필드1, 필드2) (값1, 값2)
+//    void insert( EditText nameText, EditText passwordText, EditText ageText, EditText telText, EditText emailText) {
+//        //  테이블 만들기. create table 테이블명(필드 속성, ....)
+//        String sql = "create table mytable4(id integer primary key autoincrement, name text, password text, age integer, tel text, email text);";
+//        db.execSQL(sql);
+//        //db.execSQL("insert into mytable4 (name, password) values ('"+nameText+"', '"+passwordText+"' );");
+//        db.execSQL("insert into mytable4 (name, password) values ('"+nameText+"', '"+passwordText+"', '"+ageText+"', '"+telText+"', '"+emailText+"' );");
+//        Log.d(tag, "insert 성공~!");
+//    }
 
 }
