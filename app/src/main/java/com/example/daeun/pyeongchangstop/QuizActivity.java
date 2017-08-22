@@ -125,7 +125,7 @@ public class QuizActivity extends AppCompatActivity {
                                                 Toast.makeText(getApplicationContext(), "하루 퀴즈 도전 횟수를 모두 사용하셨습니다.", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 db.execSQL("update datetable set usrquiz=" + (count - 1) + " where _id=1;");
-                                                Intent intent = new Intent(QuizActivity.this, NoticeActivity.class);
+                                                Intent intent = new Intent(QuizActivity.this, OxQuizActivity.class);
                                                 startActivity(intent);
                                             }
                                         }
