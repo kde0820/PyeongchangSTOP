@@ -29,11 +29,11 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         // 사용자 정보 테이블 생성 및 초기화
         ContentValues val = new ContentValues();
         val.put("userId","kde0820");
-        val.put("name","kimdaeun");
+        val.put("name","김다은");
         val.put("password","kkkk");
         val.put("age", 22);
-        val.put("telephone", "01000000000");
-        val.put("email", "naver");
+        val.put("telephone", "010-0000-0000");
+        val.put("email", "kde0820@gmail.com");
         val.put("point", 0);
         db.insert("usrtable", null, val);
 

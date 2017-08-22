@@ -10,13 +10,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class UserActivity extends AppCompatActivity {
-    TextView nametext, pointtext;
+    TextView nametext, pointtext, teltext, emailtext;
     Button logoutbutton;
     MySQLiteOpenHelper myDB;
     SQLiteDatabase db;
     Cursor lcursor, ucursor;
     int usrlogin;
     MainActivity mainActivity = (MainActivity) MainActivity.mainActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,14 +28,20 @@ public class UserActivity extends AppCompatActivity {
 
         lcursor = db.rawQuery("SELECT * FROM datetable", null);
         lcursor.moveToFirst();
-        usrlogin = lcursor.getInt(3); // 로그인 여부 판단
+        usrlogin = lcursor.getInt(3); // 로그인 정보
 
         ucursor = db.rawQuery("SELECT * FROM usrtable", null); // 사용자 정보 가져오기
         ucursor.moveToPosition(usrlogin);
         nametext = (TextView) findViewById(R.id.nameText);
         pointtext = (TextView) findViewById(R.id.pointText);
-        nametext.setText(ucursor.getString(1));
+        teltext = (TextView) findViewById(R.id.telText);
+        emailtext = (TextView) findViewById(R.id.emailText);
+
+        nametext.setText("이름: " + ucursor.getString(2));
         pointtext.setText("보유 포인트: " + ucursor.getInt(7) + "point");
+        teltext.setText("전화번호: " + ucursor.getString(4));
+        emailtext.setText("이메일: " + ucursor.getString(6));
+
 
         logoutbutton = (Button) findViewById(R.id.logoutButton);
         logoutbutton.setOnClickListener(new View.OnClickListener() {

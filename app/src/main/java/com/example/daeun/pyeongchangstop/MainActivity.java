@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             idText.setText(ucursor.getString(1));
 
             pointText = (TextView) findViewById(R.id.pointText);
-            pointText.setText(""+ ucursor.getInt(7));
+            pointText.setText("" + ucursor.getInt(7));
         }
 
         // 각 버튼을 누르면 화면이 넘어감.
@@ -86,8 +86,12 @@ public class MainActivity extends AppCompatActivity {
         quizButton.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View v) {
-                                              Intent intent = new Intent(MainActivity.this, QuizActivity.class);
-                                              startActivity(intent);
+                                              if (usrlogin == -1) {
+                                                    Toast.makeText(getApplicationContext(), "로그인을 하셔야 사용가능한 서비스입니다.",Toast.LENGTH_SHORT).show();
+                                              } else {
+                                                  Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+                                                  startActivity(intent);
+                                              }
                                           }
                                       }
         );
