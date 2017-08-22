@@ -20,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Util.setGlobalFont(this, getWindow().getDecorView());
 
         final EditText idText = (EditText) findViewById(R.id.usrid);
         //디자인에 있는 아이디 텍스트안에 이름을 가지는 아이디값을 idText변수에 객체로 저장

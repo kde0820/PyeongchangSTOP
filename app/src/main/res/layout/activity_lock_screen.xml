@@ -7,26 +7,35 @@
     android:background="@android:color/background_light"
     tools:context="com.example.daeun.pyeongchangstop.LockScreenActivity">
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/upper"
+        android:layout_width="388dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="0dp"
+        android:background="#77aee1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+    </android.support.constraint.ConstraintLayout>
+
     <ImageView
         android:id="@+id/unlockImage"
         android:layout_width="41dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="294dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/slidingButton"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/slidingButton"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/ic_lock_idle_lock"
-        android:layout_marginStart="294dp"
-        android:layout_marginTop="2dp" />
+        app:srcCompat="@android:drawable/ic_lock_idle_lock" />
 
     <ImageView
         android:id="@+id/mainImage"
         android:layout_width="383dp"
         android:layout_height="195dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="16dp"
         android:adjustViewBounds="false"
         android:fitsSystemWindows="false"
         android:scaleType="fitXY"
@@ -34,7 +43,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textClock"
+        app:layout_constraintTop_toBottomOf="@+id/upper"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/img_main" />
 
@@ -42,11 +51,15 @@
         android:id="@+id/textClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
         android:format12Hour="a hh:mm"
-        android:textSize="44sp"
+        android:shadowColor="@android:color/darker_gray"
+        android:shadowDx="8"
+        android:shadowDy="8"
+        android:shadowRadius="5"
+        android:textColor="@android:color/white"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +70,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
-        android:layout_marginTop="32dp"
         android:text="Title"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -70,21 +82,19 @@
         android:layout_height="46dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="37dp"
+        android:layout_marginTop="3dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@+id/slidingButton"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/slidingButton"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/img_face1"
-        android:layout_marginStart="37dp"
-        android:layout_marginTop="3dp" />
+        app:srcCompat="@drawable/img_face1" />
 
     <TextView
         android:id="@+id/appText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="9dp"
+        android:layout_marginLeft="5dp"
         android:text="앱 실행하기"
         app:layout_constraintBottom_toTopOf="@+id/slidingButton"
         app:layout_constraintLeft_toRightOf="@+id/appImage"
@@ -95,8 +105,7 @@
         android:id="@+id/unlockText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="12dp"
         android:text="잠금 해제"
         app:layout_constraintBottom_toTopOf="@+id/slidingButton"
         app:layout_constraintRight_toLeftOf="@+id/unlockImage"
@@ -123,16 +132,14 @@
         android:id="@+id/contentText"
         android:layout_width="308dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="50dp"
         android:lineSpacingExtra="5dp"
         android:text="content"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintHorizontal_bias="0.657"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/mainImage" />
 
 
 </android.support.constraint.ConstraintLayout>

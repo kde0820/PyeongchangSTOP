@@ -2,32 +2,42 @@ package com.example.daeun.pyeongchangstop;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.StringTokenizer;
 
 public class LockScreenActivity extends AppCompatActivity {
+    private static final String PATH = "/data/data/com.example.daeun.pyeongchangstop/";
     SeekBar slidingButton;
     MySQLiteOpenHelper myDB;
-    SQLiteDatabase db;
+    SQLiteDatabase db, lockdb;
     Cursor ucursor, cursor, dcursor;
-    TextView content, title, unlockText;
+    TextView content, title, unlockText, appText;
     int dbidate, current, dbcount, usrlogin;
     String dbdate;
-
-
+    Typeface face;
+    TextClock textClock;
+    ImageView mainImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,15 +79,52 @@ public class LockScreenActivity extends AppCompatActivity {
             unlockText.setText("+ 5point");
         }
 
+        // lock DB 생성
+        MakeDB makeDB = new MakeDB();
+        makeDB.createDB("lock.db", getResources());
+
         // 디비에 저장된 컨텐츠 표시
-        cursor = db.rawQuery("SELECT * FROM locktable", null); // 잠금화면 표시 내용 가져오기
+        lockdb = SQLiteDatabase.openDatabase(PATH + "databases/lock.db", null, SQLiteDatabase.OPEN_READONLY);
+        cursor = lockdb.rawQuery("SELECT * FROM locktable", null); // 잠금화면 표시 내용 가져오기
         Random random = new Random();
-        cursor.moveToPosition(random.nextInt(16));
+        cursor.moveToPosition(random.nextInt(15));
         title = (TextView) findViewById(R.id.titleText);
         content = (TextView) findViewById(R.id.contentText);
         title.setText(cursor.getString(1));
         content.setText(cursor.getString(2));
 
+        // 이미지 변경
+        AssetManager am = getResources().getAssets();
+        InputStream is = null;
+        try {
+            is = am.open("lockimg/"+ cursor.getString(3) + ".jpg");
+            Bitmap bm = BitmapFactory.decodeStream(is);
+
+            mainImage = (ImageView) findViewById(R.id.mainImage);
+            mainImage.setImageBitmap(bm);
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //외부 글꼴 적용
+        face = Typeface.createFromAsset(getAssets(), "fonts/NotoSansMonoCJKkr-Bold.otf");
+        title.setTypeface(face);
+
+        face = Typeface.createFromAsset(getAssets(), "fonts/NotoSansMonoCJKkr-Regular.otf");
+        content.setTypeface(face);
+        unlockText.setTypeface(face);
+        appText = (TextView) findViewById(R.id.appText);
+        appText.setTypeface(face);
+
+        face = Typeface.createFromAsset(getAssets(), "fonts/Computersetak-R.ttf");
+        textClock = (TextClock) findViewById(R.id.textClock);
+        textClock.setTypeface(face);
 
         // 잠금해제 슬라이드 구현
         slidingButton = (SeekBar) findViewById(R.id.slidingButton);

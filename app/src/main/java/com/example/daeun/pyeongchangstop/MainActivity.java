@@ -15,7 +15,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     ImageView quizButton, timeButton, noticeButton, storeButton;
-    TextView name, pointText, loginText;
+    TextView name, pointText, idText;
     Button loginbutton;
     MySQLiteOpenHelper myDB;
     SQLiteDatabase db;
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mainActivity = MainActivity.this;
         pressedTime = 0;
+        Util.setGlobalFont(this, getWindow().getDecorView());
 
         // 잠금화면 서비스
         Intent intent = new Intent(getApplicationContext(), ScreenService.class);
@@ -47,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         // 로그인 여부(usrlogin)에 따라 상단 버튼, 텍스트 내용 변경
-        loginText = (TextView) findViewById(R.id.loginText);
+        idText = (TextView) findViewById(R.id.idText);
         loginbutton = (Button) findViewById(R.id.loginButton);
-        if (usrlogin == -1){ // 로그인 하지 않은 경우
+        if (usrlogin == -1) { // 로그인 하지 않은 경우
             loginbutton.setText("로그인");
             loginbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -58,8 +59,11 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            loginText.setText("로그인이 필요합니다.");
-        } else{
+            findViewById(R.id.idText).setVisibility(View.GONE);
+            findViewById(R.id.ID).setVisibility(View.GONE);
+            findViewById(R.id.POINT).setVisibility(View.GONE);
+            findViewById(R.id.pointText).setVisibility(View.GONE);
+        } else {
             loginbutton.setText("마이페이지");
             loginbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -68,11 +72,13 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            ucursor.moveToPosition(usrlogin);
-            loginText.setText(ucursor.getString(2) + "님");
 
-            pointText = (TextView) findViewById(R.id.usrPoint);
-            pointText.setText("현재 포인트: " + ucursor.getInt(7));
+            findViewById(R.id.loginText).setVisibility(View.GONE);
+            ucursor.moveToPosition(usrlogin);
+            idText.setText(ucursor.getString(1));
+
+            pointText = (TextView) findViewById(R.id.pointText);
+            pointText.setText(""+ ucursor.getInt(7));
         }
 
         // 각 버튼을 누르면 화면이 넘어감.
@@ -87,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         timeButton = (ImageView) findViewById(R.id.timeButton);
-        timeButton.setOnClickListener(new View.OnClickListener(){
+        timeButton.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View v) {
                                               Intent intent = new Intent(MainActivity.this, TimeActivity.class);
@@ -97,10 +103,10 @@ public class MainActivity extends AppCompatActivity {
         );
 
         noticeButton = (ImageView) findViewById(R.id.noticeButton);
-        noticeButton.setOnClickListener(new View.OnClickListener(){
+        noticeButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                Intent intent = new Intent(MainActivity.this, NoticeActivity.class);
+                                                Intent intent = new Intent(MainActivity.this, NewsActivity.class);
                                                 startActivity(intent);
                                             }
                                         }
@@ -108,23 +114,23 @@ public class MainActivity extends AppCompatActivity {
         );
 
         storeButton = (ImageView) findViewById(R.id.storeButton);
-        storeButton.setOnClickListener(new View.OnClickListener(){
-                                              @Override
-                                              public void onClick(View v) {
-                                                  Intent intent = new Intent(MainActivity.this, StoreActivity.class);
-                                                  startActivity(intent);
-                                              }
-                                          }
+        storeButton.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+                                               Intent intent = new Intent(MainActivity.this, StoreActivity.class);
+                                               startActivity(intent);
+                                           }
+                                       }
         );
     }
 
     @Override
     public void onBackPressed() {
-        if(System.currentTimeMillis() - pressedTime < 1500){
+        if (System.currentTimeMillis() - pressedTime < 1500) {
             finish();
             return;
         }
-        Toast.makeText(getApplicationContext(),"뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
         pressedTime = System.currentTimeMillis();
     }
 }

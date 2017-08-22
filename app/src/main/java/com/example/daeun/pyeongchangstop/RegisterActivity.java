@@ -278,6 +278,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        Util.setGlobalFont(this, getWindow().getDecorView());
 
         // 회원 정보를 관리할 데이터베이스 생성
         final MySQLiteOpenHelper mySQLiteOpenHelper = new MySQLiteOpenHelper(getApplicationContext(), "memberInfo.db", null, 1);
