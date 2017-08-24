@@ -22,6 +22,8 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+        Util.setGlobalFont(this, getWindow().getDecorView(), "NanumSquareR.ttf");
+
 
         myDB = new MySQLiteOpenHelper(getApplicationContext(), "pcSTOP.db", null, 1);
         db = myDB.getWritableDatabase();
@@ -39,8 +41,8 @@ public class UserActivity extends AppCompatActivity {
 
         nametext.setText("이름: " + ucursor.getString(2));
         pointtext.setText("보유 포인트: " + ucursor.getInt(7) + "point");
-        teltext.setText("전화번호: " + ucursor.getString(4));
-        emailtext.setText("이메일: " + ucursor.getString(6));
+        teltext.setText("전화번호: " + ucursor.getString(5));
+        emailtext.setText("이메일:\n" + ucursor.getString(6));
 
 
         logoutbutton = (Button) findViewById(R.id.logoutButton);

@@ -16,12 +16,8 @@ import android.widget.Toast;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class RegisterActivity extends AppCompatActivity {
-    private MySQLiteOpenHelper helper;
-    String dbName = "st_file.db";
-    int dbVersion = 1; // 데이터베이스 버전
-
-    private SQLiteDatabase db;
-    String tag = "SQLite"; // Log 에 사용할 tag
+    MainActivity mainActivity = (MainActivity) MainActivity.mainActivity;
+    LoginActivity loginActivity = (LoginActivity) LoginActivity.loginActivity;
     //TextView nationText;
     String[] nation = {"AD - 안도라",
             "AE - 아랍 에미리트 연방",
@@ -278,10 +274,10 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        Util.setGlobalFont(this, getWindow().getDecorView());
+        Util.setGlobalFont(this, getWindow().getDecorView(), "NanumGothic.ttf");
 
         // 회원 정보를 관리할 데이터베이스 생성
-        final MySQLiteOpenHelper mySQLiteOpenHelper = new MySQLiteOpenHelper(getApplicationContext(), "memberInfo.db", null, 1);
+        final MySQLiteOpenHelper mySQLiteOpenHelper = new MySQLiteOpenHelper(getApplicationContext(), "pcSTOP.db", null, 1);
 
         //  회원 정보 입력란
         final EditText idText = (EditText) findViewById(R.id.idText);
@@ -339,58 +335,18 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     //  db에 저장
                     mySQLiteOpenHelper.insert(idText.getText().toString(), nameText.getText().toString(), passwordText.getText().toString(), ageText.getText().toString(), telText.getText().toString(), emailText.getText().toString());
-                    Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+
+                    mainActivity.finish();
+                    loginActivity.finish();
                     Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                    RegisterActivity.this.startActivity(mainIntent);
+                    startActivity(mainIntent);
+                    finish();
                 }
 
             }
         });
-        //db = helper.getWritableDatabase(); // 읽고 쓸수 있는 DB
-
-
-        //insert (); // insert 문 - 삽입추가
-
-        //select(); // select 문 - 조회
-
-        //update(); // update 문 - 수정변경
-
-        //delete(); // delete 문 - 삭제 행제거
-
-        //select();
 
     }
-
-    //  필드 안의 값을 삭제. delete from 테이블 이름 where 필드명="값"
-    void delete() {
-        db.execSQL("delete from mytable4 where id=2;");
-        Log.d(tag, "delete 완료");
-    }
-
-    //  필드 안의 값을 업데이트. update 테이블이름 set 필드명="변경할 값" where 필드값=해당값;
-    void update() {
-        db.execSQL("update mytable4 set name='Park' where id=5;");
-        Log.d(tag, "update 완료");
-    }
-
-    //  select: 데이터베이스에 저장되어있는 데이터를 검색. select * from 테이블 명
-    void select() {
-        Cursor c = db.rawQuery("select * from mytable4;", null);
-        while (c.moveToNext()) {
-            int id = c.getInt(0);
-            String name = c.getString(1);
-            Log.d(tag, "id:" + id + ",name:" + name);
-        }
-    }
-
-//    //  insert: 삽입문 추가. insert into 테이블명 (필드1, 필드2) (값1, 값2)
-//    void insert( EditText nameText, EditText passwordText, EditText ageText, EditText telText, EditText emailText) {
-//        //  테이블 만들기. create table 테이블명(필드 속성, ....)
-//        String sql = "create table mytable4(id integer primary key autoincrement, name text, password text, age integer, tel text, email text);";
-//        db.execSQL(sql);
-//        //db.execSQL("insert into mytable4 (name, password) values ('"+nameText+"', '"+passwordText+"' );");
-//        db.execSQL("insert into mytable4 (name, password) values ('"+nameText+"', '"+passwordText+"', '"+ageText+"', '"+telText+"', '"+emailText+"' );");
-//        Log.d(tag, "insert 성공~!");
-//    }
 
 }

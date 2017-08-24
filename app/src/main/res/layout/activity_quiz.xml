@@ -58,7 +58,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/btn_ox" />
+            app:srcCompat="@drawable/btn_short" />
 
         <ImageView
             android:id="@+id/selectButton"
@@ -73,7 +73,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/btn_short"
+            app:srcCompat="@drawable/btn_select"
             tools:layout_editor_absoluteX="160dp" />
 
         <ImageView
@@ -89,7 +89,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/btn_select" />
+            app:srcCompat="@drawable/btn_ox" />
 
     </android.support.constraint.ConstraintLayout>
 

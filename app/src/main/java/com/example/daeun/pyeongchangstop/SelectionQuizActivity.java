@@ -29,6 +29,7 @@ public class SelectionQuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection_quiz);
+        Util.setGlobalFont(this, getWindow().getDecorView(), "NanumGothic.ttf");
 
         myDB = new MySQLiteOpenHelper(getApplicationContext(), "pcSTOP.db", null, 1);
         db = myDB.getWritableDatabase();
@@ -85,7 +86,7 @@ public class SelectionQuizActivity extends AppCompatActivity {
                     db.execSQL("update usrtable set point=" + (point + 10) + " where _id=" + (usrlogin + 1) + ";");
 
                     builder.setTitle("정답입니다!");
-                    builder.setMessage("10point를 획득하셨습니다!\nbtn_select 퀴즈를 더 푸시겠습니까?");
+                    builder.setMessage("10point를 획득하셨습니다!\n객관식 퀴즈를 더 푸시겠습니까?");
                     builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

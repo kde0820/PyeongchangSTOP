@@ -31,7 +31,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         quizactivity = QuizActivity.this;
-        Util.setGlobalFont(this, getWindow().getDecorView());
+        Util.setGlobalFont(this, getWindow().getDecorView(), "NanumSquareR.ttf");
 
         // 미리 만들어 놓은 DB 추가
         MakeDB makeDB = new MakeDB();

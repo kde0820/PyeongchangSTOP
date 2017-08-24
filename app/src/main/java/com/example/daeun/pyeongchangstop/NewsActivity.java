@@ -23,7 +23,7 @@ public class NewsActivity extends AppCompatActivity {
             }
         });
 
-        bbc = (ImageView) findViewById(R.id.bbcButton);
+        bbc = (ImageView) findViewById(R.id.dormButton);
         bbc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

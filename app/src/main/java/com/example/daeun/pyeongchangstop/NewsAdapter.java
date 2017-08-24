@@ -1,6 +1,7 @@
 package com.example.daeun.pyeongchangstop;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -55,7 +56,8 @@ public class NewsAdapter extends BaseAdapter {
         Picasso.with(context).load(currentNews.imageLink).into(iv1);
         tvTitle.setText(currentNews.toString());
         tvDateTime.setText(currentNews.dateTime);
-
+        tvTitle.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/NanumSquareB.ttf"));
+        tvDateTime.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/NanumSquareR.ttf"));
         return view;
     }
 }

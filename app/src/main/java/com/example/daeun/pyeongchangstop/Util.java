@@ -12,7 +12,7 @@ import android.widget.TextView;
  */
 
 class Util {
-    public static void setGlobalFont(Context context, View view){
+    public static void setGlobalFont(Context context, View view, String font){
         if (view != null) {
             if (view instanceof ViewGroup) {
                 ViewGroup vg = (ViewGroup) view;
@@ -20,9 +20,9 @@ class Util {
                 for (int i = 0; i < len; i++) {
                     View v = vg.getChildAt(i);
                     if (v instanceof TextView) {
-                        ((TextView) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/NanumSquareR.ttf"));
+                        ((TextView) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/"+font));
                     }
-                    setGlobalFont(context, v);
+                    setGlobalFont(context, v, font);
                 }
             }
         } else {

@@ -66,6 +66,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
             int primaryNum = c.getInt(0);
             String userId = c.getString(1);
             //  아이디와 db에 저장된 아이디가 같으면 primaryNum 리턴
+            Log.e("UserID: ", userId);
             if(idText.equals(userId)){
                 if(passText.equals(c.getString(3))){
                     flag = primaryNum;
@@ -83,6 +84,6 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     public void insert(String idText, String nameText, String passwordText, String ageText, String telText, String emailText) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("insert into usrtable (userId, name, password, age, telephone, email) values ('"+idText+"', '"+nameText+"', '"+passwordText+"', '"+ageText+"', '"+telText+"', '"+emailText+"' );");
-        db.close();
+//        db.close();
     }
 }

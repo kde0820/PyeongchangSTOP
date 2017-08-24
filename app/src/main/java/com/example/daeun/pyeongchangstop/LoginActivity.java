@@ -1,5 +1,6 @@
 package com.example.daeun.pyeongchangstop;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
+    public static Activity loginActivity;
     MySQLiteOpenHelper myDB;
     SQLiteDatabase db;
     MainActivity mainActivity = (MainActivity) MainActivity.mainActivity;
@@ -20,7 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Util.setGlobalFont(this, getWindow().getDecorView());
+        Util.setGlobalFont(this, getWindow().getDecorView(), "NanumGothic.ttf");
+        loginActivity = LoginActivity.this;
 
         final EditText idText = (EditText) findViewById(R.id.usrid);
         //디자인에 있는 아이디 텍스트안에 이름을 가지는 아이디값을 idText변수에 객체로 저장

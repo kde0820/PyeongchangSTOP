@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mainActivity = MainActivity.this;
         pressedTime = 0;
-        Util.setGlobalFont(this, getWindow().getDecorView());
+        Util.setGlobalFont(this, getWindow().getDecorView(), "NanumSquareR.ttf");
 
         // 잠금화면 서비스
         Intent intent = new Intent(getApplicationContext(), ScreenService.class);
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                                           @Override
                                           public void onClick(View v) {
                                               if (usrlogin == -1) {
-                                                    Toast.makeText(getApplicationContext(), "로그인을 하셔야 사용가능한 서비스입니다.",Toast.LENGTH_SHORT).show();
+                                                  Toast.makeText(getApplicationContext(), "로그인을 하셔야 사용가능한 서비스입니다.", Toast.LENGTH_SHORT).show();
                                               } else {
                                                   Intent intent = new Intent(MainActivity.this, QuizActivity.class);
                                                   startActivity(intent);
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         storeButton.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
-                                               Intent intent = new Intent(MainActivity.this, StoreActivity.class);
+                                               Intent intent = new Intent(MainActivity.this, EntertainmentActivity.class);
                                                startActivity(intent);
                                            }
                                        }

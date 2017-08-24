@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 // 공지사항 파싱 --> 관련 뉴스 파싱
 public class NoticeActivity extends AppCompatActivity {
-    String url = "https://www.olympic.org/news/pyeongchang-2018";
+    String url = "https://www.pyeongchang2018.com/ko/press-releases";
     ArrayList<NewsItem> newsItemList;
     ListView lvNews;
     NewsAdapter adapter;
@@ -44,16 +44,19 @@ public class NoticeActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
                 Document doc = Jsoup.parse(response);
-                Elements itemElements = doc.getElementsByTag("article");
+                Element form = doc.getElementById("listForm");
+                Elements itemElements = form.getElementsByTag("li");
 
                 for (int i = 0; i < itemElements.size(); i++) {
                     Element item = itemElements.get(i);
-                    String title = item.getElementsByTag("h2").first().text();
-                    String datetime = item.getElementsByTag("time").text();
-                    String imageLink = parseImageLink(item.getElementsByTag("img").first().attr("srcset"));
+                    String title = item.getElementsByClass("photo-tit").first().text();
+                    String datetime = item.getElementsByClass("photo-date").first().text();
+                    Element imgDiv = item.getElementsByClass("photo-img").first();
+                    String imageLink = parseImageLink(imgDiv.getElementsByTag("img").first().attr("data-original"));
                     String newsLink = makeNewsLink(item.getElementsByTag("a").first().attr("href"));
+
+                    Log.e("이미지: ", imgDiv.getElementsByTag("img").first().attr("data-original"));
 
                     NewsItem news = new NewsItem();
                     news.title = title;
@@ -61,16 +64,8 @@ public class NoticeActivity extends AppCompatActivity {
                     news.imageLink = imageLink;
                     news.newsLink = newsLink;
                     newsItemList.add(news);
-
-                    Log.i("myTag", "title: " + title);
-                    Log.i("myTag", "datetime: " + datetime);
-                    Log.i("myTag", "imageLink: " + imageLink);
-                    Log.i("myTag", "newsLink: " + newsLink);
                 }
 
-                Log.i("myTag", "items found: " + itemElements.size());
-                Log.i("myTag", "items in news List: " + newsItemList.size());
-                Toast.makeText(NoticeActivity.this, "data received successfully", Toast.LENGTH_SHORT).show();
 
                 adapter = new NewsAdapter(NoticeActivity.this, newsItemList);
                 lvNews.setAdapter(adapter);
@@ -89,19 +84,18 @@ public class NoticeActivity extends AppCompatActivity {
                 Toast.makeText(NoticeActivity.this, "request failed", Toast.LENGTH_SHORT).show();
             }
         });
-        Toast.makeText(this, "Request sent. Please Wait", Toast.LENGTH_SHORT).show();
         queue.add(request);
-
     }
 
     private String parseImageLink(String link) {
-        String[] arryLink = link.split("jpg");
-        link = arryLink[0] + "jpg";
+        url = url.replace("/ko/press-releases","");
+        link = url + link;
         return link;
     }
 
     private String makeNewsLink(String link) {
-        url = url.replace("/news/pyeongchang-2018","");
+        url = url.replace("/ko/press-releases","");
+        link = link.replaceAll(" ","");
         link = url + link;
         return link;
     }

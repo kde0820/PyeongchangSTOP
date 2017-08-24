@@ -6,22 +6,22 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/img_face1"
+        android:icon="@drawable/icon_app"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/icon_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".QuizActivity" />
         <activity android:name=".TimeActivity" />
         <activity android:name=".NoticeActivity" />
-        <activity android:name=".StoreActivity" />
+        <activity android:name=".WebviewActivity" />
         <activity android:name=".UserActivity" />
         <activity
             android:name=".LockScreenActivity"
@@ -35,6 +35,11 @@
 
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".ShortQuizActivity" />
+        <activity android:name=".SelectionQuizActivity" />
+        <activity android:name=".OxQuizActivity" />
+        <activity android:name=".NewsActivity" />
+        <activity android:name=".EntertainmentActivity"></activity>
     </application>
 
 </manifest>
