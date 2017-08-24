@@ -138,4 +138,12 @@ public class SelectionQuizActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        quizActivity.finish();
+        Intent intent = new Intent(SelectionQuizActivity.this, QuizActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -20,8 +20,8 @@ public class QuizActivity extends AppCompatActivity {
     TextView chance;
     MySQLiteOpenHelper myDB;
     SQLiteDatabase db;
-    Cursor cursor;
-    int count, dbidate, current;
+    Cursor cursor, ucursor;
+    int count, dbidate, current, usrlogin;
     String dbdate;
     MainActivity mainActivity = (MainActivity) MainActivity.mainActivity;
     public static Activity quizactivity;
@@ -42,6 +42,10 @@ public class QuizActivity extends AppCompatActivity {
         cursor = db.rawQuery("SELECT * FROM datetable", null);
         cursor.moveToFirst();
         dbdate = cursor.getString(1);
+        usrlogin = cursor.getInt(3);
+
+        ucursor = db.rawQuery("SELECT * FROM usrtable", null);
+        ucursor.moveToPosition(usrlogin);
 
         StringTokenizer tokenizer = new StringTokenizer(dbdate, "-");
         while (tokenizer.hasMoreTokens()) {
@@ -55,10 +59,12 @@ public class QuizActivity extends AppCompatActivity {
         current = Integer.parseInt(getTime); // 현재 날짜
 
         if (current > dbidate) { // 하루 지나면 초기화
-            db.execSQL("update datetable set usedate=date('now','localtime'), usrquiz=5 where _id=1;");
+            db.execSQL("update datetable set usedate=date('now','localtime') where _id=1;");
+            db.execSQL("update usrtable set quiz=5 where _id=" + (usrlogin + 1) + ";");
         }
 
-        count = cursor.getInt(4);
+//        count = cursor.getInt(4);
+        count = ucursor.getInt(8);
         chance = (TextView) findViewById(R.id.chanceText);
         chance.setText(count + "");
 
@@ -70,7 +76,8 @@ public class QuizActivity extends AppCompatActivity {
                                                if (count == 0) {
                                                    Toast.makeText(getApplicationContext(), "하루 퀴즈 도전 횟수를 모두 사용하셨습니다.", Toast.LENGTH_SHORT).show();
                                                } else {
-                                                   db.execSQL("update datetable set usrquiz=" + (count - 1) + " where _id=1;");
+//                                                   db.execSQL("update datetable set usrquiz=" + (count - 1) + " where _id=1;");
+                                                   db.execSQL("update usrtable set quiz=" + (count - 1) + " where _id=" + (usrlogin + 1) + ";");
                                                    Intent intent = new Intent(QuizActivity.this, ShortQuizActivity.class);
                                                    startActivity(intent);
                                                }
@@ -86,7 +93,8 @@ public class QuizActivity extends AppCompatActivity {
                                                 if (count == 0) {
                                                     Toast.makeText(getApplicationContext(), "하루 퀴즈 도전 횟수를 모두 사용하셨습니다.", Toast.LENGTH_SHORT).show();
                                                 } else {
-                                                    db.execSQL("update datetable set usrquiz=" + (count - 1) + " where _id=1;");
+//                                                    db.execSQL("update datetable set usrquiz=" + (count - 1) + " where _id=1;");
+                                                    db.execSQL("update usrtable set quiz=" + (count - 1) + " where _id=" + (usrlogin + 1) + ";");
                                                     Intent intent = new Intent(QuizActivity.this, SelectionQuizActivity.class);
                                                     startActivity(intent);
                                                 }
@@ -102,7 +110,8 @@ public class QuizActivity extends AppCompatActivity {
                                             if (count == 0) {
                                                 Toast.makeText(getApplicationContext(), "하루 퀴즈 도전 횟수를 모두 사용하셨습니다.", Toast.LENGTH_SHORT).show();
                                             } else {
-                                                db.execSQL("update datetable set usrquiz=" + (count - 1) + " where _id=1;");
+//                                                db.execSQL("update datetable set usrquiz=" + (count - 1) + " where _id=1;");
+                                                db.execSQL("update usrtable set quiz=" + (count - 1) + " where _id=" + (usrlogin + 1) + ";");
                                                 Intent intent = new Intent(QuizActivity.this, OxQuizActivity.class);
                                                 startActivity(intent);
                                             }

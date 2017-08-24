@@ -38,6 +38,7 @@ public class LockScreenActivity extends AppCompatActivity {
     Typeface face;
     TextClock textClock;
     ImageView mainImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +49,19 @@ public class LockScreenActivity extends AppCompatActivity {
 
         myDB = new MySQLiteOpenHelper(getApplicationContext(), "pcSTOP.db", null, 1);
         db = myDB.getWritableDatabase();
-        ucursor = db.rawQuery("SELECT * FROM usrtable", null); // 사용자 정보 가져오기
-        ucursor.moveToFirst();
+
 
         // 잠금해제 하루 제한을 위한 변수 dbdate, dbcount 세팅
         dcursor = db.rawQuery("SELECT * FROM datetable", null); // 잠금해제 정보 가져오기
         dcursor.moveToFirst();
         dbdate = dcursor.getString(1);
-        dbcount = dcursor.getInt(2);
+
+        // 로그인 여부를 확인하기 위한 변수
+        usrlogin = dcursor.getInt(3);
+        ucursor = db.rawQuery("SELECT * FROM usrtable", null); // 사용자 정보 가져오기
+        ucursor.moveToPosition(usrlogin);
+        dbcount = ucursor.getInt(9);
+//        dbcount = dcursor.getInt(2);
 
         StringTokenizer tokenizer = new StringTokenizer(dbdate, "-");
         while (tokenizer.hasMoreTokens()) {
@@ -68,8 +74,6 @@ public class LockScreenActivity extends AppCompatActivity {
         String getTime = sdf.format(date);
         current = Integer.parseInt(getTime); // 현재 날짜
 
-        // 로그인 여부를 확인하기 위한 변수
-        usrlogin = dcursor.getInt(3);
 
         // 잠금화면 포인트 획득 횟수에 따라 text 내용 보여주기
         unlockText = (TextView) findViewById(R.id.unlockText);
@@ -97,12 +101,12 @@ public class LockScreenActivity extends AppCompatActivity {
         AssetManager am = getResources().getAssets();
         InputStream is = null;
         try {
-            is = am.open("lockimg/"+ cursor.getString(3) + ".jpg");
+            is = am.open("lockimg/" + cursor.getString(3) + ".jpg");
             Bitmap bm = BitmapFactory.decodeStream(is);
 
             mainImage = (ImageView) findViewById(R.id.mainImage);
             mainImage.setImageBitmap(bm);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
@@ -144,7 +148,8 @@ public class LockScreenActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (seekBar.getProgress() >= 90) { // 잠금해제
                     if (current > dbidate) { // 하루 지나면 unlocktime 초기화
-                        db.execSQL("update datetable set usedate=date('now','localtime'), unlocktime=0 where _id=1;");
+                        db.execSQL("update datetable set usedate=date('now','localtime') where _id=1;");
+                        db.execSQL("update usrtable set lock=0 where _id=" + (usrlogin + 1) + ";");
                     }
                     if (dbcount == 5) {
                         Toast.makeText(getApplicationContext(), "하루 제한 초과", Toast.LENGTH_SHORT).show();
@@ -152,8 +157,8 @@ public class LockScreenActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "로그인 필요", Toast.LENGTH_SHORT).show();
                     } else {
 //                        Toast.makeText(getApplicationContext(), (dbcount + 1) + "", Toast.LENGTH_SHORT).show();
-                        db.execSQL("update usrtable set point=" + (ucursor.getInt(7) + 5) + " where _id=" + (usrlogin + 1) + ";"); // 5 포인트 증가시켜 디비 업데이트
-                        db.execSQL("update datetable set usedate=date('now','localtime'), unlocktime=" + (dbcount + 1) + " where _id=1;");
+                        db.execSQL("update usrtable set point=" + (ucursor.getInt(7) + 5) + ", lock=" + (dbcount + 1) + " where _id=" + (usrlogin + 1) + ";"); // 5 포인트 증가시켜 디비 업데이트
+                        db.execSQL("update datetable set usedate=date('now','localtime') where _id=1;");
                         Toast.makeText(getApplicationContext(), "적립완료", Toast.LENGTH_SHORT).show();
                     }
                     finish();

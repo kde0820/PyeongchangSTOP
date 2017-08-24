@@ -115,7 +115,13 @@ public class ShortQuizActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        quizActivity.finish();
+        Intent intent = new Intent(ShortQuizActivity.this, QuizActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

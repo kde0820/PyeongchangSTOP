@@ -111,4 +111,12 @@ public class OxQuizActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        quizActivity.finish();
+        Intent intent = new Intent(OxQuizActivity.this, QuizActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

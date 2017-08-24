@@ -23,7 +23,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         // 최초에 데이터베이스가 없을경우, 데이터베이스 생성을 위해 호출됨
         // (이미 데이터 베이스가 만들어 졌다면, 더이상 수정, 변경 불가. 다른 테이블을 이용하고 싶으면 새로 선언문을 날려야함. )
         // 테이블 생성하는 코드를 작성한다
-        String sql = "create table usrtable(_id INTEGER PRIMARY KEY AUTOINCREMENT, userId text, name text, password text, age integer, telephone text, email text, point integer);";
+        String sql = "create table usrtable(_id INTEGER PRIMARY KEY AUTOINCREMENT, userId text, name text, password text, age integer, telephone text, email text, point integer, quiz integer, lock integer);";
         db.execSQL(sql);
 
         // 사용자 정보 테이블 생성 및 초기화
@@ -35,12 +35,14 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         val.put("telephone", "010-0000-0000");
         val.put("email", "kde0820@gmail.com");
         val.put("point", 0);
+        val.put("quiz", 5);
+        val.put("lock", 0);
         db.insert("usrtable", null, val);
 
         // 날짜, 잠금해제 횟수, 로그인 정보 테이블 생성 및 초기화
         sql = "create table datetable(_id INTEGER PRIMARY KEY AUTOINCREMENT, usedate text, unlocktime integer, usrlogin integer, usrquiz integer)";
         db.execSQL(sql);
-        db.execSQL("insert into datetable (usedate, unlocktime, usrlogin, usrquiz) values (date('now','localtime'), 0, -1, 5);");
+        db.execSQL("insert into datetable (usedate, unlocktime, usrlogin) values (date('now','localtime'), 0, -1);");
     }
 
     @Override
@@ -83,7 +85,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     //  insert: 삽입문 추가. insert into 테이블명 (필드1, 필드2) (값1, 값2)
     public void insert(String idText, String nameText, String passwordText, String ageText, String telText, String emailText) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("insert into usrtable (userId, name, password, age, telephone, email) values ('"+idText+"', '"+nameText+"', '"+passwordText+"', '"+ageText+"', '"+telText+"', '"+emailText+"' );");
+        db.execSQL("insert into usrtable (userId, name, password, age, telephone, email, point, quiz) values ('"+idText+"', '"+nameText+"', '"+passwordText+"', '"+ageText+"', '"+telText+"', '"+emailText+"', 0, 5);");
 //        db.close();
     }
 }
